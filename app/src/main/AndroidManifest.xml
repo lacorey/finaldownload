@@ -23,6 +23,7 @@
         <activity android:name=".test.MyAsyncTaskActivity"/>
         <activity android:name=".demo.DownloadActivity"/>
         <activity android:name=".demo.DownloadListActivity"/>
+        <activity android:name=".demo.db.DBActivity"/>
 
         <service android:name=".download.DownloadService">
             <intent-filter  >

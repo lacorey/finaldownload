@@ -3,33 +3,48 @@ package cn.laclab.client.finaldownload.download;
 
 import java.io.File;
 
+import cn.laclab.client.database.annotation.Column;
+import cn.laclab.client.database.annotation.Id;
+import cn.laclab.client.database.annotation.Table;
 import cn.laclab.client.finaldownload.core.http.HttpHandler;
 
+@Table(name = "t_downloadinfo")
 public class DownloadInfo {
 
     public DownloadInfo() {
     }
 
+    @Id
+    @Column(name = "id")
     private long id;
 
     private HttpHandler<File> handler;
 
+    @Column(name = "state")
     private HttpHandler.State state;
 
+    @Column(name = "downloadUrl")
     private String downloadUrl;
 
+    @Column(name = "fileName")
     private String fileName;
 
+    @Column(name = "fileSavePath")
     private String fileSavePath;
 
+    @Column(name = "progress")
     private long progress;
 
+    @Column(name = "fileLength")
     private long fileLength;
 
+    @Column(name = "autoResume")
     private boolean autoResume;
 
+    @Column(name = "autoRename")
     private boolean autoRename;
 
+    @Column(name = "icon")
     private String icon;
 
 

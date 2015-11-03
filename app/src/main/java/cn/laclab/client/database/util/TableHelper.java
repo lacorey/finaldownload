@@ -13,6 +13,7 @@ import java.util.Map;
 import cn.laclab.client.database.annotation.Column;
 import cn.laclab.client.database.annotation.Id;
 import cn.laclab.client.database.annotation.Table;
+import cn.laclab.client.database.annotation.Transient;
 
 
 /**
@@ -44,7 +45,12 @@ public class TableHelper {
         sb.append("CREATE TABLE ").append(tableName).append(" (");
         List<Field> allFields = TableHelper.joinFields(clazz.getDeclaredFields(),clazz.getSuperclass().getDeclaredFields());
         for(Field field : allFields){
+            //过滤没有添加Column的字段
             if(!field.isAnnotationPresent(Column.class)){
+                continue;
+            }
+            //其实不需要此字段，只需在不想创建到数据库的字段上不添加 column 注解即可
+            if(field.isAnnotationPresent(Transient.class)){
                 continue;
             }
             Column column = field.getAnnotation(Column.class);

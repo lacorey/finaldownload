@@ -9,11 +9,13 @@ import android.view.View;
 import android.widget.Button;
 
 import cn.laclab.client.finaldownload.demo.DownloadActivity;
+import cn.laclab.client.finaldownload.demo.db.DBActivity;
 import cn.laclab.client.finaldownload.test.MyAsyncTaskActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private Button mBtn0;
     private Button mBtn1;
+    private Button mBtn2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBtn0.setOnClickListener(this);
         mBtn1 = (Button) findViewById(R.id.btn1);
         mBtn1.setOnClickListener(this);
+        mBtn2 = (Button) findViewById(R.id.btn2);
+        mBtn2.setOnClickListener(this);
     }
 
     @Override
@@ -59,6 +63,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent donwloadIntent = new Intent();
                 donwloadIntent.setClass(MainActivity.this, DownloadActivity.class);
                 startActivity(donwloadIntent);
+                break;
+            case R.id.btn2:
+                Intent dbIntent = new Intent();
+                dbIntent.setClass(MainActivity.this, DBActivity.class);
+                startActivity(dbIntent);
                 break;
         }
     }

@@ -46,6 +46,8 @@ public interface BaseDao<T> {
 
     public abstract boolean isExist(String sql, String[] selectionArgs);
 
+    public abstract boolean isExist(T entity,String selection,String[] selectionArgs);
+
     /**
      * 将查询的结果保存为名值对map.
      *

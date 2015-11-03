@@ -260,6 +260,29 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @Override
+    public boolean isExist(T entity,String selection, String[] selectionArgs) {
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try{
+            db = this.dbHelper.getReadableDatabase();
+            cursor = db.query(this.tableName, null, selection, selectionArgs, null, null, null, null);
+            if(cursor.getCount() > 0){
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+        return false;
+    }
+
+    @Override
     public List<Map<String, String>> query2MapList(String sql, String[] selectionArgs) {
         Log.d(TAG, "[query2MapList]: " + getLogSql(sql, selectionArgs));
         SQLiteDatabase db = null;

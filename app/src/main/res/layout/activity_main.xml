@@ -22,4 +22,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/btn2"
+        android:layout_marginTop="10dp"
+        android:text="测试数据库"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
