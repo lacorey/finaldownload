@@ -60,7 +60,7 @@ public class DataSource {
     public List<DownloadInfo> getData() {
         String target = "/sdcard/xUtils/" + System.currentTimeMillis();
         List<DownloadInfo> appInfos = new ArrayList<DownloadInfo>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < URLS.length; i++) {
             DownloadInfo appInfo = new DownloadInfo();
             appInfo.setDownloadUrl(URLS[i]);
             appInfo.setFileName(URLS[i].substring(URLS[i].lastIndexOf("/")+1));
