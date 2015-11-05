@@ -65,4 +65,6 @@ public interface BaseDao<T> {
      * @param selectionArgs
      */
     public void execSql(String sql, Object[] selectionArgs);
+
+    public void saveOrUpdate(T entity,String selection,String[] selectionArgs);
 }

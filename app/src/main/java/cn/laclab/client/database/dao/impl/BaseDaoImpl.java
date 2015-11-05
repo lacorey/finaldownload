@@ -20,6 +20,7 @@ import cn.laclab.client.database.annotation.Id;
 import cn.laclab.client.database.annotation.Table;
 import cn.laclab.client.database.dao.BaseDao;
 import cn.laclab.client.database.util.TableHelper;
+import cn.laclab.client.finaldownload.core.http.HttpHandler;
 
 
 /**
@@ -339,6 +340,15 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         }
     }
 
+    @Override
+    public void saveOrUpdate(T entity,String selection,String[] selectionArgs) {
+        if(isExist(entity,selection,selectionArgs)){
+            update(entity);
+        }else{
+            insert(entity);
+        }
+    }
+
     private String getLogSql(String sql, Object[] args) {
         if (args == null || args.length == 0) {
             return sql;
@@ -394,6 +404,11 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
                             field.set(entity, Character.valueOf(fieldValue
                                     .charAt(0)));
                         }
+                    } else if(HttpHandler.State.class == fieldType){
+                        //todo 改成工厂配置模式，不能写死为HttpHandler.State
+                        field.set(entity, HttpHandler.State.valueOf(cursor.getString(c)));
+                    } else if(Boolean.class == fieldType || boolean.class == fieldType){
+                        field.set(entity, Boolean.valueOf(cursor.getString(c)));
                     }
                 }
             }

@@ -56,10 +56,11 @@ public class DataSource {
         return sDataSource;
     }
 
+
     public List<DownloadInfo> getData() {
         String target = "/sdcard/xUtils/" + System.currentTimeMillis();
         List<DownloadInfo> appInfos = new ArrayList<DownloadInfo>();
-        for (int i = 0; i < NAMES.length; i++) {
+        for (int i = 0; i < 2; i++) {
             DownloadInfo appInfo = new DownloadInfo();
             appInfo.setDownloadUrl(URLS[i]);
             appInfo.setFileName(URLS[i].substring(URLS[i].lastIndexOf("/")+1));

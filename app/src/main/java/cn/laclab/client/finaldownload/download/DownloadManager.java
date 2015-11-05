@@ -1,6 +1,7 @@
 package cn.laclab.client.finaldownload.download;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,9 +13,11 @@ import cn.laclab.client.finaldownload.core.callback.RequestCallBack;
 import cn.laclab.client.finaldownload.core.exception.HttpException;
 import cn.laclab.client.finaldownload.core.http.HttpHandler;
 import cn.laclab.client.finaldownload.core.http.ResponseInfo;
+import cn.laclab.client.finaldownload.db.dao.impl.DownloadInfoDaoImpl;
 
 public class DownloadManager {
     private final AtomicInteger mCount = new AtomicInteger(1);
+    private DownloadInfoDaoImpl infoImpl;
 
     private List<DownloadInfo> downloadInfoList;
 
@@ -24,6 +27,12 @@ public class DownloadManager {
 
     /*package*/ DownloadManager(Context appContext) {
         mContext = appContext;
+        infoImpl = new DownloadInfoDaoImpl(appContext);
+        try {
+            downloadInfoList = infoImpl.find();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (downloadInfoList == null) {
             downloadInfoList = new ArrayList<DownloadInfo>();
         }
@@ -44,6 +53,7 @@ public class DownloadManager {
         info.setHandler(handler);
         info.setState(handler.getState());
         downloadInfoList.add(info);
+        infoImpl.insert(info,false);
     }
 
     public void addNewDownload(String url, String fileName, String target,
@@ -62,6 +72,7 @@ public class DownloadManager {
         downloadInfo.setHandler(handler);
         downloadInfo.setState(handler.getState());
         downloadInfoList.add(downloadInfo);
+        infoImpl.insert(downloadInfo);
     }
 
     public void resumeDownload(int index, final RequestCallBack<File> callback) throws Exception {
@@ -80,6 +91,8 @@ public class DownloadManager {
                 new ManagerCallBack(downloadInfo, callback));
         downloadInfo.setHandler(handler);
         downloadInfo.setState(handler.getState());
+        Log.e("TAG","--resumeDownload downloadInfo="+downloadInfo.toString());
+        infoImpl.saveOrUpdate(downloadInfo,"downloadUrl=?",new String[]{downloadInfo.getDownloadUrl()});
     }
 
     public void removeDownload(int index) throws Exception {
@@ -93,6 +106,7 @@ public class DownloadManager {
             handler.cancel();
         }
         downloadInfoList.remove(downloadInfo);
+        infoImpl.delete((int) downloadInfo.getId());
     }
 
     public void stopDownload(int index) throws Exception {
@@ -107,6 +121,7 @@ public class DownloadManager {
         } else {
             downloadInfo.setState(HttpHandler.State.CANCELLED);
         }
+        infoImpl.saveOrUpdate(downloadInfo,"downloadUrl=?",new String[]{downloadInfo.getDownloadUrl()});
     }
 
     public void stopAllDownload() throws Exception {
@@ -117,6 +132,7 @@ public class DownloadManager {
             } else {
                 downloadInfo.setState(HttpHandler.State.CANCELLED);
             }
+            infoImpl.saveOrUpdate(downloadInfo,"downloadUrl=?",new String[]{downloadInfo.getDownloadUrl()});
         }
     }
 
@@ -126,6 +142,7 @@ public class DownloadManager {
             if (handler != null) {
                 downloadInfo.setState(handler.getState());
             }
+            infoImpl.saveOrUpdate(downloadInfo,"downloadUrl=?",new String[]{downloadInfo.getDownloadUrl()});
         }
     }
 
@@ -172,11 +189,7 @@ public class DownloadManager {
             if (handler != null) {
                 downloadInfo.setState(handler.getState());
             }
-//            try {
-//                db.saveOrUpdate(downloadInfo);
-//            } catch (DbException e) {
-//                LogUtils.e(e.getMessage(), e);
-//            }
+            infoImpl.saveOrUpdate(downloadInfo,"downloadUrl=?",new String[]{downloadInfo.getDownloadUrl()});
             if (baseCallBack != null) {
                 baseCallBack.onStart();
             }
@@ -188,11 +201,7 @@ public class DownloadManager {
             if (handler != null) {
                 downloadInfo.setState(handler.getState());
             }
-//            try {
-//                db.saveOrUpdate(downloadInfo);
-//            } catch (DbException e) {
-//                LogUtils.e(e.getMessage(), e);
-//            }
+            infoImpl.saveOrUpdate(downloadInfo,"downloadUrl=?",new String[]{downloadInfo.getDownloadUrl()});
             if (baseCallBack != null) {
                 baseCallBack.onCancelled();
             }
@@ -206,11 +215,7 @@ public class DownloadManager {
             }
             downloadInfo.setFileLength(total);
             downloadInfo.setProgress(current);
-//            try {
-//                db.saveOrUpdate(downloadInfo);
-//            } catch (DbException e) {
-//                LogUtils.e(e.getMessage(), e);
-//            }
+            infoImpl.saveOrUpdate(downloadInfo,"downloadUrl=?",new String[]{downloadInfo.getDownloadUrl()});
             if (baseCallBack != null) {
                 baseCallBack.onLoading(total, current, isUploading);
             }
@@ -222,11 +227,8 @@ public class DownloadManager {
             if (handler != null) {
                 downloadInfo.setState(handler.getState());
             }
-//            try {
-//                db.saveOrUpdate(downloadInfo);
-//            } catch (DbException e) {
-//                LogUtils.e(e.getMessage(), e);
-//            }
+            Log.e("TAG","*******downloadInfo.state="+downloadInfo.getState());
+            infoImpl.saveOrUpdate(downloadInfo,"downloadUrl=?",new String[]{downloadInfo.getDownloadUrl()});
             if (baseCallBack != null) {
                 baseCallBack.onSuccess(responseInfo);
             }
@@ -238,11 +240,7 @@ public class DownloadManager {
             if (handler != null) {
                 downloadInfo.setState(handler.getState());
             }
-//            try {
-//                db.saveOrUpdate(downloadInfo);
-//            } catch (DbException e) {
-//                LogUtils.e(e.getMessage(), e);
-//            }
+            infoImpl.saveOrUpdate(downloadInfo,"downloadUrl=?",new String[]{downloadInfo.getDownloadUrl()});
             if (baseCallBack != null) {
                 baseCallBack.onFailure(error, msg);
             }

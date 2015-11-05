@@ -161,6 +161,12 @@ public class DownloadInfo {
                 ", state=" + state +
                 ", downloadUrl='" + downloadUrl + '\'' +
                 ", fileName='" + fileName + '\'' +
+                ", fileSavePath='" + fileSavePath + '\'' +
+                ", progress=" + progress +
+                ", fileLength=" + fileLength +
+                ", autoResume=" + autoResume +
+                ", autoRename=" + autoRename +
+                ", icon='" + icon + '\'' +
                 '}';
     }
 }
