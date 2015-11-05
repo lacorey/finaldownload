@@ -138,6 +138,10 @@ public class OtherUtils {
         if (!TextUtils.isEmpty(acceptRanges)) {
             return acceptRanges.equals("bytes");
         }
+        String contentRanges = conn.getHeaderField("Content-Range");
+        if(!TextUtils.isEmpty(contentRanges)){
+            return contentRanges.startsWith("bytes");
+        }
         return false;
     }
 
