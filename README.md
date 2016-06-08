@@ -7,4 +7,7 @@ a library for android download
 ------------------------------
  ![image](https://github.com/lacorey/Grocery/blob/master/images/download.jpg)
 
-效果
+
+截图
+------------------------------
+![image](https://github.com/lacorey/Grocery/blob/master/images/download-screenshot.png)
