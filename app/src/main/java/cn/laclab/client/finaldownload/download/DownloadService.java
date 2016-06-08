@@ -11,10 +11,12 @@ import java.util.List;
 public class DownloadService extends Service {
 
     private static DownloadManager DOWNLOAD_MANAGER;
+    private static final String packageName = "cn.laclab.client.finaldownload";
 
     public static DownloadManager getDownloadManager(Context appContext) {
         if (!DownloadService.isServiceRunning(appContext)) {
             Intent downloadSvr = new Intent("download.service.action");
+            downloadSvr.setPackage(packageName);
             appContext.startService(downloadSvr);
         }
         if (DownloadService.DOWNLOAD_MANAGER == null) {
